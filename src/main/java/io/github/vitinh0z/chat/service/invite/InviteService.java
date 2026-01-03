@@ -2,7 +2,7 @@ package io.github.vitinh0z.chat.service.invite;
 
 import io.github.vitinh0z.chat.entities.invite.Invite;
 import io.github.vitinh0z.chat.entities.user.User;
-import io.github.vitinh0z.chat.repository.membership.invite.InviteRepository;
+import io.github.vitinh0z.chat.repository.invite.InviteRepository;
 import io.github.vitinh0z.chat.service.membership.MembershipService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

@@ -35,7 +35,7 @@ public class MessageService {
 
     public void excludeMessage(Long userId, Long messageId, Long roomId ) {
 
-        Message message = messageRepository.findById(messageId).orElseThrow();
+        Message message = messageRepository.findByIdAndSenderId(messageId, userId).orElseThrow();
 
         if (message.getUser().getId().equals(userId)) {
             messageRepository.delete(message);

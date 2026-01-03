@@ -1,4 +1,4 @@
-package io.github.vitinh0z.chat.repository.membership.invite;
+package io.github.vitinh0z.chat.repository.invite;
 
 import io.github.vitinh0z.chat.entities.invite.Invite;
 import org.springframework.data.jpa.repository.JpaRepository;

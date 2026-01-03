@@ -16,9 +16,6 @@ public class MembershipService {
 
     private final MembershipRepository membershipRepository;
 
-
-    //enterRoom(User user, Room room)
-
     public void enterRoom(User user, Room room){
 
         Optional<Membership> member = membershipRepository.findByUserAndRoomId(user.getId(), room.getId());
@@ -30,36 +27,63 @@ public class MembershipService {
         Membership membership = new Membership();
         membership.setUser(user);
         membership.setRoom(room);
-        membership.setRoomRole(RoomRole.MEMBERSHIP);
+        membership.setRoomRole(RoomRole.MEMBER);
 
         membershipRepository.save(membership);
-
     }
 
-    //exitRoom(User user, Room room)
-    public void exitRoom(User user, Room room){
+    public void exitRoom(Long userId, Long roomId){
 
-        Optional<Membership> member = membershipRepository.findByUserAndRoomId(user.getId(), room.getId());
+        Membership member = membershipRepository.findByUserAndRoomId(userId, roomId)
+                .orElseThrow(() -> new RuntimeException("User or Room not found")
+        );
 
-        if (member.isEmpty()){
-            throw new IllegalArgumentException("Voce não pertence ao grupo");
+        if (member.getRoomRole() == RoomRole.OWNER){
+            throw new IllegalArgumentException("You cannot exit. Transfer ownership or delete the room."
+            );
+        }
+        membershipRepository.delete(member);
+    }
+
+    public void alternRole(User owner, User member, Room room, RoomRole role){
+
+        Membership requester = membershipRepository.findByUserAndRoomId(owner.getId(), room.getId())
+                .orElseThrow(() -> new RuntimeException("User or Room not Found")
+        );
+
+        if (requester.getRoomRole() != RoomRole.OWNER){
+            throw new IllegalArgumentException("Only Owner can change role");
         }
 
-        membershipRepository.delete(member.get());
+        Membership membership = membershipRepository.findByUserAndRoomId(member.getId(), room.getId())
+                .orElseThrow(() -> new RuntimeException("User or Room not Found")
+        );
 
+        membership.setRoomRole(role);
+        membershipRepository.save(membership);
     }
 
+    public void banUser(User solicitante, User alvo, Room room){
 
-    //AlternRole (User Owner, User member, Room room, RoomRole role) verificar se user é owner
-    public void AlternRole(User owner, User member, Room room, Room role){
+        Membership requester = membershipRepository.findByUserAndRoomId(solicitante.getId(), room.getId())
+                .orElseThrow(() -> new RuntimeException("User or Room not Found")
+        );
 
+        Membership member = membershipRepository.findByUserAndRoomId(alvo.getId(), room.getId())
+                .orElseThrow(() -> new RuntimeException("User or Room not found"));
 
+        if (requester.getRoomRole() == RoomRole.MEMBER || requester.getRoomRole() == RoomRole.SPECTATOR){
+            throw new IllegalArgumentException("You dont have permission to ban user");
+        }
 
-    }
+        if(member.getRoomRole() == RoomRole.OWNER){
+            throw new IllegalArgumentException("You cannot ban the Admin");
+        }
 
-
-    public void BanUser(User solicitante, User alvo, Room room){
-
+        if(requester.getRoomRole() == RoomRole.ADMIN && member.getRoomRole() == RoomRole.ADMIN){
+            throw new IllegalArgumentException("You cannot ban another Admins");
+        }
+        membershipRepository.delete(member);
     }
 
 }

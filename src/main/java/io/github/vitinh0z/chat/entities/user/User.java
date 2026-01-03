@@ -30,6 +30,11 @@ public class User {
     @Column(nullable = false)
     private String nickname;
 
+    @Column(nullable = false)
+    private String email;
+
+    private String picProfile;
+
     @OneToMany(mappedBy = "owner")
     private List<Room> roomsCreated = new ArrayList<>();
 
