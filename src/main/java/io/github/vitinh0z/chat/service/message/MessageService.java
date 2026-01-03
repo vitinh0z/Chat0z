@@ -33,8 +33,7 @@ public class MessageService {
         return messageRepository.save(message);
     }
 
-
-    public void excludeMessage(Long userId, Long messageId ) {
+    public void excludeMessage(Long userId, Long messageId, Long roomId ) {
 
         Message message = messageRepository.findById(messageId).orElseThrow();
 
@@ -42,7 +41,6 @@ public class MessageService {
             messageRepository.delete(message);
         }
 
-        Long roomId = message.getRoom().getId();
         Membership solicited = membershipRepository.findByUserAndRoomId(userId, roomId)
                 .orElseThrow(() -> new RuntimeException("Precisa estar na sala da mensagem")
         );
