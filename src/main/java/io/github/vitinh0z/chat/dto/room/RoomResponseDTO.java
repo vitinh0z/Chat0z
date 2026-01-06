@@ -6,7 +6,7 @@ public record RoomResponseDTO(
         Long roomId,
         String name){
 
-    public RoomResponseDTO fromEntity(Room room){
+    public static RoomResponseDTO fromEntity(Room room){
         return new RoomResponseDTO(
                 room.getId(),
                 room.getRoomName()

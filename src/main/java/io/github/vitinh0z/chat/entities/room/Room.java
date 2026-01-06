@@ -33,6 +33,8 @@ public class Room {
     @JoinColumn(name = "owner_id")
     private User owner;
 
+    private String inviteCode;
+
     @ManyToMany
     @JoinColumn(name = "user_id")
     private List<Membership> memberships = new ArrayList<>();

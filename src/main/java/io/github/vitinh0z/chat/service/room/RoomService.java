@@ -7,6 +7,7 @@ import io.github.vitinh0z.chat.enums.room.RoomRole;
 import io.github.vitinh0z.chat.repository.membership.MembershipRepository;
 import io.github.vitinh0z.chat.repository.room.RoomRepository;
 import io.github.vitinh0z.chat.repository.user.UserRepository;
+import io.github.vitinh0z.chat.service.membership.MembershipService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,14 +18,15 @@ public class RoomService {
     private final RoomRepository roomRepository;
     private final UserRepository userRepository;
     private final MembershipRepository membershipRepository;
+    private final MembershipService membershipService;
 
-    public Room createRoom(User user, String roomName){
+    public Room createRoom(User user, String roomName) {
 
-       User findUser = userRepository.findById(user.getId())
+        User findUser = userRepository.findById(user.getId())
                 .orElseThrow(() -> new RuntimeException("User not found")
-        );
+                );
 
-        if (roomName == null || roomName.trim().isEmpty()){
+        if (roomName == null || roomName.trim().isEmpty()) {
             throw new IllegalArgumentException("The Room dont be empty");
         }
 
@@ -46,22 +48,35 @@ public class RoomService {
         return roomSave;
     }
 
-    public void deleteRoom(User user, long roomId){
+    public void deleteRoom(User user, long roomId) {
 
         Room room = roomRepository.findById(roomId)
                 .orElseThrow(() -> new RuntimeException("Room not Found")
 
-        );
+                );
 
-        if (!room.getOwner().getId().equals(user.getId())){
+        if (!room.getOwner().getId().equals(user.getId())) {
             throw new IllegalArgumentException("You Cannot be Delete this Room");
         }
 
         roomRepository.delete(room);
     }
 
-    public void allRooms(){
+    public void allRooms() {
         roomRepository.findAll();
+    }
+
+    public Room joinRoom(User user, String inviteCode){
+        Room room = roomRepository.findByInviteCode(inviteCode)
+                .orElseThrow(() -> new RuntimeException("Invite not found")
+        );
+
+        User findUser = userRepository.findByEmail(user.getEmail())
+                .orElseThrow(() -> new RuntimeException("User not found")
+        );
+        membershipService.enterRoom(findUser, room);
+
+        return room;
     }
 
 }
