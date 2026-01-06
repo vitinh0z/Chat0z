@@ -12,13 +12,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @RequestMapping("/user")
+@RestController
 public class UserController {
 
-    private final UserRepository userRepository;
     private final UserService userService;
 
     @PatchMapping("/me")
@@ -34,7 +33,7 @@ public class UserController {
     @DeleteMapping("/me")
     public ResponseEntity<Void> deleteUser (@AuthenticationPrincipal OAuth2User principal){
 
-        User user = userService.findUserByEmail(principal.getAttribute("email"))
+        User user = userService.findUserByEmail(principal.getAttribute("email"));
 
         userService.deleteUser(user.getId());
         return ResponseEntity.noContent().build();

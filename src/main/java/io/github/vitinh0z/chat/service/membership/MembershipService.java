@@ -81,7 +81,7 @@ public class MembershipService {
         }
 
         if(requester.getRoomRole() == RoomRole.ADMIN && member.getRoomRole() == RoomRole.ADMIN){
-            throw new IllegalArgumentException("You cannot ban another Admins");
+            throw new IllegalArgumentException("You cannot ban another Admin");
         }
         membershipRepository.delete(member);
     }

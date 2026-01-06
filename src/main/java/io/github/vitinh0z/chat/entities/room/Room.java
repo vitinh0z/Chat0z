@@ -21,11 +21,12 @@ public class Room {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(nullable = false)
     private String roomName;
 
+    @Column(nullable = false)
     private String password;
 
     @ManyToOne
