@@ -31,6 +31,7 @@ public class ChatController {
                 roomId,
                 requestDTO.content()
         );
+        
         return MessageResponseDTO.fromEntity(saveMessage);
     }
 

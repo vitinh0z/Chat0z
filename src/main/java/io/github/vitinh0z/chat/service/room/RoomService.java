@@ -9,6 +9,9 @@ import io.github.vitinh0z.chat.repository.room.RoomRepository;
 import io.github.vitinh0z.chat.repository.user.UserRepository;
 import io.github.vitinh0z.chat.service.membership.MembershipService;
 import lombok.RequiredArgsConstructor;
+
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 @Service
@@ -78,5 +81,16 @@ public class RoomService {
 
         return room;
     }
+
+    public List<Room> getAllRoomsByUser(User user){
+
+        User findUser = userRepository.findById(user.getId()).orElseThrow(() -> new RuntimeException("User not found")
+        );    
+
+        return roomRepository.findAllRoomsByUserId(findUser.getId());
+
+
+    }
+
 
 }
