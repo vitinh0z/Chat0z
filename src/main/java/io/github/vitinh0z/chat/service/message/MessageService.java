@@ -5,6 +5,7 @@ import io.github.vitinh0z.chat.entities.message.Message;
 import io.github.vitinh0z.chat.enums.room.RoomRole;
 import io.github.vitinh0z.chat.repository.membership.MembershipRepository;
 import io.github.vitinh0z.chat.repository.message.MessageRepository;
+import io.github.vitinh0z.chat.utils.crypto.CryptoUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,8 +25,12 @@ public class MessageService {
                 .orElseThrow(() -> new RuntimeException("Você precisar estar na sala para enviar mensagem")
         );
 
+        String roomPassword = membership.getRoom().getInviteCode();
+
+        String encryptedContent = CryptoUtils.encrypt(content, roomPassword);
+
         Message message = new Message();
-        message.setContent(content);
+        message.setContent(encryptedContent);
         message.setUser(membership.getUser());
         message.setRoom(membership.getRoom());
         message.setTimestemp(LocalDateTime.now());

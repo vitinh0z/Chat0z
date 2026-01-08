@@ -47,6 +47,19 @@ public class RoomController {
                 .toList());
     }
 
+    @PostMapping
+    public ResponseEntity<RoomResponseDTO> createRoom(
+        @AuthenticationPrincipal OAuth2User principal,
+        @RequestBody RoomCreateDTO data
+        
+    ){
+        String email = principal.getAttribute("email");
+        
+        Room room = roomService.createRoom(email, data); 
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(RoomResponseDTO.fromEntity(room));
+    }
+
       
 
 }

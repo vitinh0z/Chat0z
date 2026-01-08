@@ -32,7 +32,12 @@ public class ChatController {
                 requestDTO.content()
         );
         
-        return MessageResponseDTO.fromEntity(saveMessage);
+        return new MessageResponseDTO(
+                savedMessage.getId(),
+                requestDTO.content(),
+                savedMessage.getUser().getNickname(),
+                savedMessage.getTimestemp().toString()
+        );
     }
 
     @MessageMapping("/chat/{roomId}/delete")
