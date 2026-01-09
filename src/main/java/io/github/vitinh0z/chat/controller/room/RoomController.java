@@ -2,8 +2,11 @@ package io.github.vitinh0z.chat.controller.room;
 
 import java.util.List;
 
+import io.github.vitinh0z.chat.dto.room.RoomCreateDTO;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -44,22 +47,18 @@ public class RoomController {
         return ResponseEntity.ok(roomService.getAllRoomsByUser(user)
                 .stream()
                 .map(RoomResponseDTO::fromEntity)
-                .toList());
+                .toList()
+        );
     }
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<RoomResponseDTO> createRoom(
         @AuthenticationPrincipal OAuth2User principal,
         @RequestBody RoomCreateDTO data
         
     ){
         String email = principal.getAttribute("email");
-        
-        Room room = roomService.createRoom(email, data); 
-
+        Room room = roomService.createRoom(data, email);
         return ResponseEntity.status(HttpStatus.CREATED).body(RoomResponseDTO.fromEntity(room));
     }
-
-      
-
 }

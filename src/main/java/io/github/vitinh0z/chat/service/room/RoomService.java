@@ -1,5 +1,6 @@
 package io.github.vitinh0z.chat.service.room;
 
+import io.github.vitinh0z.chat.dto.room.RoomCreateDTO;
 import io.github.vitinh0z.chat.entities.membership.Membership;
 import io.github.vitinh0z.chat.entities.room.Room;
 import io.github.vitinh0z.chat.entities.user.User;
@@ -13,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -23,19 +25,23 @@ public class RoomService {
     private final MembershipRepository membershipRepository;
     private final MembershipService membershipService;
 
-    public Room createRoom(User user, String roomName) {
 
-        User findUser = userRepository.findById(user.getId())
+    @Transactional
+    public Room createRoom(RoomCreateDTO user, String roomName) {
+
+        User findUser = userRepository.findById(user.id())
                 .orElseThrow(() -> new RuntimeException("User not found")
                 );
 
-        if (roomName == null || roomName.trim().isEmpty()) {
-            throw new IllegalArgumentException("The Room dont be empty");
+        if (roomRepository.findByInviteCode(user.invite()).isPresent()) {
+            throw new IllegalArgumentException("Try another code invite");
         }
+
 
         Room room = new Room();
 
-        room.setRoomName(roomName);
+        room.setRoomName(user.name());
+        room.setInviteCode(user.invite());
         room.setOwner(findUser);
 
         Room roomSave = roomRepository.save(room);

@@ -1,5 +1,6 @@
 package io.github.vitinh0z.chat.service.message;
 
+import io.github.vitinh0z.chat.dto.message.MessageResponseDTO;
 import io.github.vitinh0z.chat.entities.membership.Membership;
 import io.github.vitinh0z.chat.entities.message.Message;
 import io.github.vitinh0z.chat.enums.room.RoomRole;
@@ -10,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -38,23 +40,48 @@ public class MessageService {
         return messageRepository.save(message);
     }
 
-    public void excludeMessage(Long userId, Long messageId, Long roomId ) {
+    public void excludeMessage(Long userId, Long messageId, Long roomId) {
 
-        Message message = messageRepository.findByIdAndSenderId(messageId, userId).orElseThrow();
+        Message message = messageRepository.findById(messageId)
+                .orElseThrow(() -> new RuntimeException("message not found"));
 
-        if (message.getUser().getId().equals(userId)) {
+        if (!message.getRoom().getId().equals(roomId)) {
+            throw new IllegalArgumentException("this message not is this room");
+        }
+
+        Membership requester = membershipRepository.findByUserAndRoomId(userId, roomId)
+                .orElseThrow(() -> new RuntimeException("you not is member of the this room"));
+
+        boolean isSender = message.getUser().getId().equals(userId);
+        boolean isAdmin = requester.getRoomRole() == RoomRole.OWNER || requester.getRoomRole() == RoomRole.ADMIN;
+
+        if (isSender || isAdmin) {
             messageRepository.delete(message);
+        } else {
+            throw new IllegalArgumentException("you not have permission for delete this message");
         }
+    }
 
-        Membership solicited = membershipRepository.findByUserAndRoomId(userId, roomId)
-                .orElseThrow(() -> new RuntimeException("Precisa estar na sala da mensagem")
-        );
+    public List<MessageResponseDTO> getAllMessages (Long userId, Long roomId){
 
-        if (solicited.getRoomRole() == RoomRole.OWNER || solicited.getRoomRole() == RoomRole.ADMIN){
-            messageRepository.delete(message);
-        }
-        else {
-            throw new IllegalArgumentException("You Dont have permission for delete the message");
-        }
+        Membership membership = membershipRepository.findByUserAndRoomId(userId, roomId)
+                .orElseThrow(() -> new RuntimeException("User or Room not found"));
+
+        String roomKey = membership.getRoom().getInviteCode();
+
+        List<Message> encrypted = messageRepository.findByRoomIdOrderByTimestempAsc(roomId);
+
+        return encrypted.stream().map(msm -> {
+            String decryptedContent = CryptoUtils.decrypt(msm.getContent(), roomKey);
+
+
+            return new MessageResponseDTO(msm.getId(),
+                    decryptedContent,
+                    msm.getUser().getNickname(),
+                    msm.getTimestemp().toString()
+            );
+
+        }).toList();
+
     }
 }
