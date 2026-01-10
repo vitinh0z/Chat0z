@@ -1,7 +1,6 @@
 package io.github.vitinh0z.chat.service.user;
 
 
-import io.github.vitinh0z.chat.dto.user.UserPrivateResponseDTO;
 import io.github.vitinh0z.chat.dto.user.UserUpdateRequestDTO;
 import io.github.vitinh0z.chat.entities.user.User;
 import io.github.vitinh0z.chat.enums.user.UserStatus;
@@ -9,16 +8,13 @@ import io.github.vitinh0z.chat.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Objects;
-import java.util.Optional;
-
 @Service
 @RequiredArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
 
-    public User processOauth2Login(String email, String fotoPerfil){
+    public void processOauth2Login(String email, String fotoPerfil){
 
         User findUser = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("Email not found"));
@@ -27,7 +23,7 @@ public class UserService {
 
             findUser.setPicProfile(fotoPerfil);
 
-            return userRepository.save(findUser);
+            userRepository.save(findUser);
         }
 
         User newUser = new User();
@@ -36,7 +32,7 @@ public class UserService {
         String firstNick = email.split("@")[0];
         newUser.setNickname(firstNick);
 
-        return userRepository.save(newUser);
+        userRepository.save(newUser);
     }
 
     public User updateStatus(long userId, UserStatus status){
@@ -48,10 +44,6 @@ public class UserService {
         return userRepository.save(findUser);
     }
 
-    public User getUser (long userId){
-
-        return userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
-    }
 
     public User updateProfile(long userId, UserUpdateRequestDTO data){
 
