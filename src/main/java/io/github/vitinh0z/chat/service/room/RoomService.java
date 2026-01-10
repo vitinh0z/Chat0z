@@ -93,7 +93,7 @@ public class RoomService {
         User findUser = userRepository.findById(user.getId()).orElseThrow(() -> new RuntimeException("User not found")
         );    
 
-        return roomRepository.findAllRoomsByUserId(findUser.getId());
+        return roomRepository.findByMembershipsUserId(findUser.getId());
 
 
     }

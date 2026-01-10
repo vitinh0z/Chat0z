@@ -7,5 +7,5 @@ import java.util.Optional;
 
 public interface MembershipRepository extends JpaRepository<Membership, Long> {
 
-    Optional<Membership> findByUserAndRoomId(Long userId, Long roomId);
+    Optional<Membership> findByUserIdAndRoomId(Long userId, Long roomId);
 }

@@ -26,20 +26,16 @@ public class Room {
     @Column(nullable = false)
     private String roomName;
 
-    @Column(nullable = false)
-    private String password;
-
     @ManyToOne
     @JoinColumn(name = "owner_id")
     private User owner;
 
     private String inviteCode;
 
-    @ManyToMany
-    @JoinColumn(name = "user_id")
+    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL)
     private List<Membership> memberships = new ArrayList<>();
 
-    @OneToMany(mappedBy = "room")
+    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL)
     private List<Message> messages = new ArrayList<>();
 
 }

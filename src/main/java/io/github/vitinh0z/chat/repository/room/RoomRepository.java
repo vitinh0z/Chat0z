@@ -10,6 +10,5 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
 
     Optional<Room> findByInviteCode(String inviteCode);
 
-
-    List<Room> findAllRoomsByUserId(Long userId);
+    List<Room> findByMembershipsUserId(Long userId);
 }

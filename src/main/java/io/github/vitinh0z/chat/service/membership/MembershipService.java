@@ -18,7 +18,7 @@ public class MembershipService {
 
     public void enterRoom(User user, Room room){
 
-        Optional<Membership> member = membershipRepository.findByUserAndRoomId(user.getId(), room.getId());
+        Optional<Membership> member = membershipRepository.findByUserIdAndRoomId(user.getId(), room.getId());
 
         if(member.isPresent()){
             throw new IllegalArgumentException("Ja é membro da sala");
@@ -34,7 +34,7 @@ public class MembershipService {
 
     public void exitRoom(Long userId, Long roomId){
 
-        Membership member = membershipRepository.findByUserAndRoomId(userId, roomId)
+        Membership member = membershipRepository.findByUserIdAndRoomId(userId, roomId)
                 .orElseThrow(() -> new RuntimeException("User or Room not found")
         );
 
@@ -47,7 +47,7 @@ public class MembershipService {
 
     public void alternRole(User owner, User member, Room room, RoomRole role){
 
-        Membership requester = membershipRepository.findByUserAndRoomId(owner.getId(), room.getId())
+        Membership requester = membershipRepository.findByUserIdAndRoomId(owner.getId(), room.getId())
                 .orElseThrow(() -> new RuntimeException("User or Room not Found")
         );
 
@@ -55,7 +55,7 @@ public class MembershipService {
             throw new IllegalArgumentException("Only Owner can change role");
         }
 
-        Membership membership = membershipRepository.findByUserAndRoomId(member.getId(), room.getId())
+        Membership membership = membershipRepository.findByUserIdAndRoomId(member.getId(), room.getId())
                 .orElseThrow(() -> new RuntimeException("User or Room not Found")
         );
 
@@ -65,11 +65,11 @@ public class MembershipService {
 
     public void banUser(User solicitante, User alvo, Room room){
 
-        Membership requester = membershipRepository.findByUserAndRoomId(solicitante.getId(), room.getId())
+        Membership requester = membershipRepository.findByUserIdAndRoomId(solicitante.getId(), room.getId())
                 .orElseThrow(() -> new RuntimeException("User or Room not Found")
         );
 
-        Membership member = membershipRepository.findByUserAndRoomId(alvo.getId(), room.getId())
+        Membership member = membershipRepository.findByUserIdAndRoomId(alvo.getId(), room.getId())
                 .orElseThrow(() -> new RuntimeException("User or Room not found"));
 
         if (requester.getRoomRole() == RoomRole.MEMBER || requester.getRoomRole() == RoomRole.SPECTATOR){

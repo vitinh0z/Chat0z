@@ -23,7 +23,7 @@ public class MessageService {
 
     public Message sendMessage (Long userId, Long roomId, String content){
 
-        Membership membership = membershipRepository.findByUserAndRoomId(userId, roomId)
+        Membership membership = membershipRepository.findByUserIdAndRoomId(userId, roomId)
                 .orElseThrow(() -> new RuntimeException("Você precisar estar na sala para enviar mensagem")
         );
 
@@ -49,7 +49,7 @@ public class MessageService {
             throw new IllegalArgumentException("this message not is this room");
         }
 
-        Membership requester = membershipRepository.findByUserAndRoomId(userId, roomId)
+        Membership requester = membershipRepository.findByUserIdAndRoomId(userId, roomId)
                 .orElseThrow(() -> new RuntimeException("you not is member of the this room"));
 
         boolean isSender = message.getUser().getId().equals(userId);
@@ -64,7 +64,7 @@ public class MessageService {
 
     public List<MessageResponseDTO> getAllMessages (Long userId, Long roomId){
 
-        Membership membership = membershipRepository.findByUserAndRoomId(userId, roomId)
+        Membership membership = membershipRepository.findByUserIdAndRoomId(userId, roomId)
                 .orElseThrow(() -> new RuntimeException("User or Room not found"));
 
         String roomKey = membership.getRoom().getInviteCode();
