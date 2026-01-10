@@ -1,4 +1,4 @@
-# Chat0z 💬
+# Chat0z
 
 > Um sistema de chat em tempo real com criptografia de ponta a ponta, desenvolvido com Spring Boot e WebSocket.
 
@@ -489,7 +489,7 @@ Este projeto é de código aberto e está disponível para uso livre.
 
 ## 👨‍💻 Créditos
 
-**Desenvolvedor:** Victor Hugo ([@vitinh0z](https://github.com/vitinh0z))
+**Desenvolvedor:** Victor Gabriel ([@vitinh0z](https://github.com/vitinh0z))
 
 Este projeto foi desenvolvido como um sistema de chat completo e seguro, utilizando as melhores práticas de desenvolvimento Spring Boot.
 
