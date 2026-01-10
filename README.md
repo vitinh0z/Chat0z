@@ -311,7 +311,7 @@ Existem 3 níveis de permissão nas salas:
 - content: String (criptografado)
 - user: User
 - room: Room
-- timestemp: LocalDateTime
+- timestamp: LocalDateTime
 ```
 
 #### Membership (Membro)
