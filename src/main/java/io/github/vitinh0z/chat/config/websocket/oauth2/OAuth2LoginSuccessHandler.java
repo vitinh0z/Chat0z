@@ -33,7 +33,7 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         String picProfile = oAuth2User.getAttribute("picture");
 
         userService.processOauth2Login(email, picProfile);
-        setDefaultTargetUrl("/rooms/me");
+        setDefaultTargetUrl("/");
 
         super.onAuthenticationSuccess(request, response, chain, authentication);
     }

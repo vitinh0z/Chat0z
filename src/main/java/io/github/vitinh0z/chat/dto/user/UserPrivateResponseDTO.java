@@ -7,8 +7,8 @@ public record UserPrivateResponseDTO (Long userId, String nickname, String email
     public static UserPrivateResponseDTO fromEntity(User user) {
         return new UserPrivateResponseDTO(
                 user.getId(),
-                user.getEmail(),
                 user.getNickname(),
+                user.getEmail(),
                 user.getPicProfile()
         );
 
