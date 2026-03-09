@@ -285,11 +285,12 @@ const App = (function () {
         method: 'POST',
         body: JSON.stringify({ name, invite }),
       });
+      const roomWithInvite = { ...room, invite };
       closeModal(modalCreate);
       toast(`Sala "${room.name}" criada!`, 'success');
-      rooms.push(room);
+      rooms.push(roomWithInvite);
       renderRooms();
-      await selectRoom(room);
+      await selectRoom(roomWithInvite);
     } catch (err) {
       createError.textContent = err.message || 'Erro ao criar sala. Tente outro código de convite.';
       createError.classList.remove('hidden');
@@ -315,11 +316,12 @@ const App = (function () {
         method: 'POST',
         body: JSON.stringify({ inviteCode }),
       });
+      const roomWithInvite = { ...room, invite: inviteCode };
       closeModal(modalJoin);
       toast(`Você entrou em "${room.name}"!`, 'success');
-      if (!rooms.find(r => r.roomId === room.roomId)) rooms.push(room);
+      if (!rooms.find(r => r.roomId === room.roomId)) rooms.push(roomWithInvite);
       renderRooms();
-      await selectRoom(room);
+      await selectRoom(roomWithInvite);
     } catch (err) {
       joinError.textContent = err.message || 'Código de convite inválido ou você já é membro.';
       joinError.classList.remove('hidden');
@@ -411,10 +413,14 @@ const App = (function () {
     // Copy invite code
     btnRoomInvite.addEventListener('click', async () => {
       if (!currentRoom) return;
-      const code = currentRoom.invite || `#${currentRoom.roomId}`;
+      const code = currentRoom.invite;
+      if (!code) {
+        toast('Código de convite não disponível. Reabra a sala.', 'info');
+        return;
+      }
       try {
         await navigator.clipboard.writeText(code);
-        toast('Código copiado!', 'info');
+        toast('Código de convite copiado!', 'info');
       } catch {
         toast('Não foi possível copiar.', 'error');
       }
