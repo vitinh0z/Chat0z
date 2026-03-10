@@ -16,23 +16,22 @@ public class UserService {
 
     public void processOauth2Login(String email, String fotoPerfil){
 
-        User findUser = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("Email not found"));
-
-        if (findUser.getPicProfile() == null) {
-
-            findUser.setPicProfile(fotoPerfil);
-
-            userRepository.save(findUser);
-        }
-
-        User newUser = new User();
-        newUser.setEmail(email);
-        newUser.setPicProfile(fotoPerfil);
-        String firstNick = email.split("@")[0];
-        newUser.setNickname(firstNick);
-
-        userRepository.save(newUser);
+        userRepository.findByEmail(email).ifPresentOrElse(
+                existingUser -> {
+                    if (existingUser.getPicProfile() == null) {
+                        existingUser.setPicProfile(fotoPerfil);
+                        userRepository.save(existingUser);
+                    }
+                },
+                () -> {
+                    User newUser = new User();
+                    newUser.setEmail(email);
+                    newUser.setPicProfile(fotoPerfil);
+                    newUser.setNickname(email.split("@")[0]);
+                    newUser.setUserStatus(UserStatus.ONLINE);
+                    userRepository.save(newUser);
+                }
+        );
     }
 
     public User updateStatus(long userId, UserStatus status){

@@ -8,6 +8,7 @@ import io.github.vitinh0z.chat.repository.membership.MembershipRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -15,6 +16,10 @@ import java.util.Optional;
 public class MembershipService {
 
     private final MembershipRepository membershipRepository;
+
+    public List<Membership> getMembersByRoom(Long roomId) {
+        return membershipRepository.findByRoomId(roomId);
+    }
 
     public void enterRoom(User user, Room room){
 
