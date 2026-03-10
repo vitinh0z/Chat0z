@@ -27,21 +27,21 @@ public class RoomService {
 
 
     @Transactional
-    public Room createRoom(RoomCreateDTO user, String roomName) {
+    public Room createRoom(RoomCreateDTO data, String email) {
 
-        User findUser = userRepository.findById(user.id())
+        User findUser = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found")
                 );
 
-        if (roomRepository.findByInviteCode(user.invite()).isPresent()) {
+        if (roomRepository.findByInviteCode(data.invite()).isPresent()) {
             throw new IllegalArgumentException("Try another code invite");
         }
 
 
         Room room = new Room();
 
-        room.setRoomName(user.name());
-        room.setInviteCode(user.invite());
+        room.setRoomName(data.name());
+        room.setInviteCode(data.invite());
         room.setOwner(findUser);
 
         Room roomSave = roomRepository.save(room);
@@ -69,6 +69,11 @@ public class RoomService {
         }
 
         roomRepository.delete(room);
+    }
+
+    public Room findById(Long roomId) {
+        return roomRepository.findById(roomId)
+                .orElseThrow(() -> new RuntimeException("Room not found"));
     }
 
     public void allRooms() {

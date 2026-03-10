@@ -21,7 +21,7 @@ public class ChatController {
     private final MessageService messageService;
 
     @MessageMapping("/chat/{roomId}")
-    @SendTo("topic/room/{roomId}")
+    @SendTo("/topic/room/{roomId}")
     public MessageResponseDTO sendMessage(@DestinationVariable Long roomId,
                                           @Payload MessageRequestDTO requestDTO
     ){

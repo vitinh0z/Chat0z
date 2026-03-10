@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat0z - Mensagens criptografadas em tempo real</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.25rem 2.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--text-main);
+            letter-spacing: -0.5px;
+        }
+
+        .logo span {
+            color: var(--primary);
+        }
+
+        .hero {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 5rem 2rem;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(59, 130, 246, 0.12);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            color: var(--primary);
+            border-radius: 99px;
+            padding: 0.35rem 1rem;
+            font-size: 0.82rem;
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+            letter-spacing: 0.3px;
+        }
+
+        .hero h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 800;
+            letter-spacing: -1px;
+            line-height: 1.15;
+            max-width: 680px;
+            margin-bottom: 1.25rem;
+        }
+
+        .hero h1 span {
+            color: var(--primary);
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            max-width: 520px;
+            margin-bottom: 2.5rem;
+        }
+
+        .cta-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn-google {
+            display: flex;
+            align-items: center;
+            gap: 0.65rem;
+            background: #fff;
+            color: #1a1a2e;
+            padding: 0.7rem 1.6rem;
+            border-radius: var(--radius);
+            font-size: 0.95rem;
+            font-weight: 600;
+            font-family: inherit;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            transition: opacity 0.15s;
+        }
+
+        .btn-google:hover {
+            opacity: 0.9;
+            text-decoration: none;
+        }
+
+        .btn-google svg {
+            flex-shrink: 0;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.25rem;
+            max-width: 900px;
+            width: 100%;
+            margin: 4rem auto 0;
+            padding: 0 2rem;
+        }
+
+        .feature-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+        }
+
+        .feature-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: var(--radius);
+            background: rgba(59, 130, 246, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+
+        .feature-icon svg {
+            stroke: var(--primary);
+        }
+
+        .feature-card h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.4rem;
+        }
+
+        .feature-card p {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border);
+            margin-top: 4rem;
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <span class="logo">Chat<span>0z</span></span>
+    <a href="/oauth2/authorization/google" class="btn-google">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+            <path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z" fill="#4285F4"/>
+            <path d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z" fill="#34A853"/>
+            <path d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332z" fill="#FBBC05"/>
+            <path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z" fill="#EA4335"/>
+        </svg>
+        Entrar com Google
+    </a>
+</nav>
+
+<section class="hero">
+    <span class="hero-badge">Criptografia ponta a ponta</span>
+    <h1>Converse com <span>privacidade</span> e sem limites</h1>
+    <p>Chat0z oferece mensagens em tempo real com criptografia AES-256 integrada. Crie salas, convide pessoas e bata papo com seguranca.</p>
+    <div class="cta-group">
+        <a href="/oauth2/authorization/google" class="btn-google">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                <path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z" fill="#4285F4"/>
+                <path d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z" fill="#34A853"/>
+                <path d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332z" fill="#FBBC05"/>
+                <path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z" fill="#EA4335"/>
+            </svg>
+            Comecar agora
+        </a>
+    </div>
+
+    <div class="features">
+        <div class="feature-card">
+            <div class="feature-icon">
+                <svg width="20" height="20" fill="none" stroke-width="1.8" viewBox="0 0 24 24">
+                    <rect x="3" y="11" width="18" height="11" rx="2" stroke="currentColor"/>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor"/>
+                </svg>
+            </div>
+            <h3>Criptografia AES-256</h3>
+            <p>Todas as mensagens sao criptografadas com AES-256-CBC. Apenas os membros da sala podem ler.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">
+                <svg width="20" height="20" fill="none" stroke-width="1.8" viewBox="0 0 24 24">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke="currentColor"/>
+                </svg>
+            </div>
+            <h3>Mensagens em tempo real</h3>
+            <p>WebSocket com STOMP garante entrega instantanea das mensagens sem necessidade de atualizar a pagina.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">
+                <svg width="20" height="20" fill="none" stroke-width="1.8" viewBox="0 0 24 24">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="currentColor"/>
+                    <circle cx="9" cy="7" r="4" stroke="currentColor"/>
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87" stroke="currentColor"/>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75" stroke="currentColor"/>
+                </svg>
+            </div>
+            <h3>Salas com controle de acesso</h3>
+            <p>Crie salas privadas com codigo de convite. Gerencie permissoes como owner, admin, membro ou spectator.</p>
+        </div>
+    </div>
+</section>
+
+<footer>
+    &copy; 2025 Chat0z &mdash; Desenvolvido com Spring Boot + WebSocket
+</footer>
+
+</body>
+</html>
